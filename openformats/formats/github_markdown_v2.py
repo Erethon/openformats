@@ -21,6 +21,7 @@ class GithubMarkdownHandlerV2(OrderedCompilerMixin, Handler):
         # assume stringset is ordered within the template
         transcriber = Transcriber(template)
         template = transcriber.source
+        yaml_handler = YamlHandler()
 
         for string in stringset:
             tr_string = string.string
@@ -28,7 +29,7 @@ class GithubMarkdownHandlerV2(OrderedCompilerMixin, Handler):
                 # if string's key is int this is a markdown string
                 int(string.key)
             except ValueError:
-                tr_string = YamlHandler._wrap_in_quotes(string)
+                tr_string = yaml_handler._compile_single(string)
 
             hash_position = template.index(string.template_replacement)
             transcriber.copy_until(hash_position)
